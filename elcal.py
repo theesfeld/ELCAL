@@ -7,6 +7,8 @@ class Form(QDialog):
 
     def __init__(self, parent=None):
         super(Form, self).__init__(parent)
+        self.elevator = self.Elevator()
+        self.building = self.Building()
 
         self.capacityFactorLabel = QLabel('Capacity Factor (%)')
         self.capacityFactor = QSpinBox()
@@ -35,6 +37,23 @@ class Form(QDialog):
         self.setGeometry(300, 300, 600, 900)
         self.setWindowTitle('Elevator Approximator')
         self.show()
+
+    class Building():
+        def __init__(self):
+            floors = 0
+            population = 0
+
+    class Elevator():
+        def __init__(self):
+            capacity = 0
+            capacityFactor = 0
+            doorOpenTime = 0
+            doorCloseTime = 0
+            passengerLoading = 0
+            passengerUnloading = 0
+            speed = 0
+            jerk = 0
+            acceleration = 0
 
     def estimate(self):
         elevatorData = []

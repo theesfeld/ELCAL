@@ -39,8 +39,8 @@
 
 ## VARIABLES NEEDED FROM USER
 
-CAPACITY FACTOR             (CF)    [% in decimal]
-CAR CAPACITY                (CC)    [kg]
+CAPACITY FACTOR             (cf)    [% in decimal]
+CAR CAPACITY                (cc)    [kg]
 NUMBER OF FLOORS
 - population per floor      (ui)
 - height of each floor      (df)    [m]
