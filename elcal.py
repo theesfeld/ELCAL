@@ -16,10 +16,8 @@ class Form(QDialog):
         self.outputLabel = QLabel()
         self.outputLabel.clear()
         self.estimateButton.clicked.connect(self.estimate)
-        self.elevatorTable = QTableWidget(30,6)
-        self.elevatorTable.setHorizontalHeaderLabels(['Capacity', 'Speed', 'Acceleration', 'Jerk', 'Door Open', 'Door Close'])
-        self.riserTable = QTableWidget(80,3)
-        self.riserTable.setHorizontalHeaderLabels(['Floor', 'Height', 'Population'])
+        self.riserTable = QTableWidget(80,2)
+        self.riserTable.setHorizontalHeaderLabels(['Height', 'Population'])
 
         grid = QGridLayout()
         grid.addWidget(self.elevatorTableLabel,3,1)
@@ -39,16 +37,22 @@ class Form(QDialog):
         self.show()
 
     def estimate(self):
-        cf = self.capacityFactor.value()
-        cc = self.elevatorCapacity.value()
-        ui = []
-        j = 
-        n = []
+        elevatorData = []
+        buildingData = []      
+
+        print(elevatorData)
+        print(buildingData)
+
+        #cf = self.capacityFactor.value()
+        #cc = self.elevatorCapacity.value()
+        #ui = []
+        #j = 
+        #n = []
         # ElevatorVariables.md has variable list
         
         # persons per elevator
         # p=\left(\frac{cf}{100}\right)\cdot{cc}
-        p = (cf/100) * cc
+        #p = (cf/100) * cc
         
         # Effective Building population
         # Ueff = 0
@@ -57,47 +61,45 @@ class Form(QDialog):
 
         # Average Highest Reversal Floor 
         # H=\sum_{j=1}^{N-1}\left(\sum_{i=1}^{j}\frac{U_i}{U_eff}\right)^P
-        h = sum(sum(ui/((ueff)), (i, 1, j))**p, (j, 1, n - 1))
+        #h = sum(sum(ui/((ueff)), (i, 1, j))**p, (j, 1, n - 1))
 
         # Average Number Of Stops Made During Round Trip
         # S=N-\sum_{i=1}^{N}\left(1-\frac{U_i}{U_eff}\right)^P
-        s = n - sum((-ui/(ueff) + 1)**p, (i, 1, n))
+        #s = n - sum((-ui/(ueff) + 1)**p, (i, 1, n))
 
         # Average Time For Passenger To Load And Unload The Elevator
         # tp=\frac{({tl}+{tu})}{2}
-        tp = (tl+tu)/2
+        #tp = (tl+tu)/2
 
         # Time taken for the lift to travel between two adjacent floors at rated speed
         # tv=\frac{df}{v}
-        tv = df / v
+        #tv = df / v
 
         # cycle time (travel to floor, open / close doors)
         # t={tfl}+{tc}+{to}
-        t = tfl + tc + to
+        #t = tfl + tc + to
 
         # time consumed making a single stop
         # ts={t}-{tv}
-        ts = t - tv
+        #ts = t - tv
 
         # Round Trip Time (RTT)
         # rtt=\left[\right]
-        rtt = (2*h*tv) + ((s + 1)*ts) + (2*p*tp)
+        #rtt = (2*h*tv) + ((s + 1)*ts) + (2*p*tp)
 
         # Up Peak Round Trip Time (UPPRTT) [RTT with 'losses']
         # uppint=\frac{rtt}{l}
-        uppint = rtt/l
+        #uppint = rtt/l
 
         # Up Peak Handling Capacity (UPPHC)
         # NUMBER of people moved in 5 minutes
         # upphc=\frac{300\cdot{p}\cdot{*}l}{rtt}   
-        upphc = 300*p*l/rtt
+        #upphc = 300*p*l/rtt
 
         # Handling Capacity
         # PERCENT of people moved in 5 minutes
         # hc=\frac{{upphc}\cdot{100}}{ueff}
-        hc = (upphc*100)/ueff
-
-        print(f'Calculating')
+        #hc = (upphc*100)/ueff
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
