@@ -1,5 +1,6 @@
 from os import lseek
 import sys
+from xmlrpc.client import GzipDecodedResponse
 from PySide6.QtWidgets import (QLabel, QSpinBox, QPushButton, QApplication,
                                QGridLayout, QDialog, QTableWidget)
 
@@ -10,24 +11,58 @@ class Form(QDialog):
         self.elevator = self.Elevator()
         self.building = self.Building()
 
-        self.capacityFactorLabel = QLabel('Capacity Factor (%)')
-        self.capacityFactor = QSpinBox()
-        self.capacityFactor.setMaximum(100)
-        self.elevatorTableLabel = QLabel('Elevator Capacity (lb)')
-        self.estimateButton = QPushButton('Estimate')
+        self.elevatorNumberLabel = QLabel('Number of Elevators')
+        self.elevatorNumber = QSpinBox()
+        self.elevatorCapacityFactorLabel = QLabel('Capacity Factor (%)')
+        self.elevatorCapacityFactor = QSpinBox()
+        self.elevatorCapacityFactor.setMaximum(100)
+        self.elevatorCapacityLabel = QLabel('Elevator Capacity (lb)')
+        self.elevatorCapacity = QSpinBox()
+        self.elevatorCapacity.setMaximum(20000)
+        self.elevatorDoorOLabel = QLabel('Door Open Time (s)')
+        self.elevatorDoorO = QSpinBox()
+        self.elevatorDoorCLabel = QLabel('Door Close Time (s)')
+        self.elevatorDoorC = QSpinBox()
+        self.elevatorSpeedLabel = QLabel('Elevator Contract Speed (m/s)')
+        self.elevatorSpeed = QSpinBox()
+        self.elevatorAccelLabel = QLabel('Acceleration (m/s/2)')
+        self.elevatorAccel = QSpinBox()
+        self.elevatorJerkLabel = QLabel('Jerk (m/s/3)')
+        self.elevatorJerk = QSpinBox()
+        self.buildingFloorsLabel = QLabel('Building Floors')
+        self.buildingFloors = QSpinBox()
+        self.buildingPopulationLabel = QLabel('Building Population')
+        self.buildingPopulation = QSpinBox()
+        self.buildingPassengerLULabel = QLabel('Loading / Unloading Time (s)')
+        self.buildingPassengerLU = QSpinBox()
+        self.estimateButton = QPushButton('Calculate')
+        self.estimateButton.clicked.connect(self.calculate)
         self.outputLabel = QLabel()
         self.outputLabel.clear()
-        self.estimateButton.clicked.connect(self.estimate)
-        self.riserTable = QTableWidget(80,2)
-        self.riserTable.setHorizontalHeaderLabels(['Height', 'Population'])
 
         grid = QGridLayout()
-        grid.addWidget(self.elevatorTableLabel,3,1)
-        grid.addWidget(self.elevatorTable,0,0,5,1)
-        grid.addWidget(self.riserTable,0,1,5,1)
-        
-        grid.addWidget(self.capacityFactorLabel,2,1)
-        grid.addWidget(self.capacityFactor,2,2)
+        grid.addWidget(self.elevatorNumberLabel)
+        grid.addWidget(self.elevatorNumber)
+        grid.addWidget(self.elevatorSpeedLabel)
+        grid.addWidget(self.elevatorSpeed)
+        grid.addWidget(self.elevatorAccelLabel)
+        grid.addWidget(self.elevatorAccel)
+        grid.addWidget(self.elevatorJerkLabel)
+        grid.addWidget(self.elevatorJerk)
+        grid.addWidget(self.elevatorCapacityLabel)
+        grid.addWidget(self.elevatorCapacity)
+        grid.addWidget(self.elevatorCapacityFactorLabel)
+        grid.addWidget(self.elevatorCapacityFactor)
+        grid.addWidget(self.elevatorDoorOLabel)
+        grid.addWidget(self.elevatorDoorO)
+        grid.addWidget(self.elevatorDoorCLabel)
+        grid.addWidget(self.elevatorDoorC)
+        grid.addWidget(self.buildingFloorsLabel)
+        grid.addWidget(self.buildingFloors)
+        grid.addWidget(self.buildingPopulationLabel)
+        grid.addWidget(self.buildingPopulation)
+        grid.addWidget(self.buildingPassengerLULabel)
+        grid.addWidget(self.buildingPassengerLU)
         grid.addWidget(self.estimateButton,5,1)
         grid.addWidget(self.outputLabel,5,2)
         grid.rowStretch(1)
@@ -35,7 +70,7 @@ class Form(QDialog):
         self.setLayout(grid)
 
         self.setGeometry(300, 300, 600, 900)
-        self.setWindowTitle('Elevator Approximator')
+        self.setWindowTitle('Elevator Up Peak Calculator')
         self.show()
 
     class Building():
@@ -55,8 +90,12 @@ class Form(QDialog):
             jerk = 0
             acceleration = 0
 
-    def estimate(self):
+    def calculate(self):
         elevators = []
+
+        for i in range(self.elevatorNumber.value()):
+            
+            elevators.append('')
 
         #cf = self.capacityFactor.value()
         #cc = self.elevatorCapacity.value()
