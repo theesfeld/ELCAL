@@ -1,48 +1,71 @@
 #!/usr/bin/python
 
 import sys
-from PySide6 import QtCore, QtGui, QtWidgets
+from PySide6.QtWidgets import (QLabel, QSpinBox, QComboBox, QPushButton, QApplication,
+                               QVBoxLayout, QDialog)
 
-class MainWindow(QtWidgets.QWidget):
-    
-    def __init__(self):
-        super(MainWindow, self).__init__()
+capacityFactor = {
+            'Office (Single Tenant)': .33,
+            'Office (Multi Tenant)': .22,
+            'Residential': .17,
+            'Hotel': .38,
+            'Hospital': .12
+        }
 
-        areaPerFloorLabel = QtWidgets.QLabel('Average Area Per Floor')
-        areaPerFloor = QtWidgets.QSpinBox()
-        buildingFloorsLabel = QtWidgets.QLabel('Floors in Building')
-        buildingFloors = QtWidgets.QSpinBox()
-        buildingTypeLabel = QtWidgets.QLabel('Building Type')
-        buildingType = QtWidgets.QComboBox()
-        estimateButton = QtWidgets.QPushButton('Estimate')
-        estimateButton.clicked.connect(self.estimate)
-        outputLabel = QtWidgets.QLabel()
+class Form(QDialog):
 
-        vbox = QtWidgets.QVBoxLayout()
-        vbox.addWidget(areaPerFloorLabel)
-        vbox.addWidget(areaPerFloor)
-        vbox.addWidget(buildingFloorsLabel)
-        vbox.addWidget(buildingFloors)
-        vbox.addWidget(buildingTypeLabel)
-        vbox.addWidget(buildingType)
-        vbox.addWidget(estimateButton)
-        vbox.addWidget(outputLabel)
+    def __init__(self, parent=None):
+        super(Form, self).__init__(parent)
+
+        self.areaPerFloorLabel = QLabel('Average Area Per Floor')
+        self.areaPerFloor = QSpinBox()
+        self.areaPerFloor.setMaximum(4000)
+        self.buildingFloorsLabel = QLabel('Floors in Building')
+        self.buildingFloors = QSpinBox()
+        self.buildingFloors.setMaximum(100)
+        self.buildingTypeLabel = QLabel('Building Type')
+        self.buildingType = QComboBox()
+        self.buildingType.clear()
+
+        for text, cf in capacityFactor.items():
+            self.buildingType.addItem(text)
+        
+        self.peoplePerCarLabel = QLabel('People Per Car')
+        self.peoplePerCar = QSpinBox()
+        self.estimateButton = QPushButton('Estimate')
+        self.outputLabel = QLabel('')
+        self.estimateButton.clicked.connect(self.estimate)
+
+        vbox = QVBoxLayout()
+        vbox.addWidget(self.areaPerFloorLabel)
+        vbox.addWidget(self.areaPerFloor)
+        vbox.addWidget(self.buildingFloorsLabel)
+        vbox.addWidget(self.buildingFloors)
+        vbox.addWidget(self.buildingTypeLabel)
+        vbox.addWidget(self.buildingType)
+        vbox.addWidget(self.peoplePerCarLabel)
+        vbox.addWidget(self.peoplePerCar)
+        vbox.addWidget(self.estimateButton)
+        vbox.addWidget(self.outputLabel)
         vbox.addStretch(1)
-        
+
         self.setLayout(vbox)
-        
+
         self.setGeometry(300, 300, 300, 150)
         self.setWindowTitle('Elevator Approximator')
         self.show()
 
-        def estimate(self):
+    def estimate(self):
+        A = self.areaPerFloor.value()
+        F = self.buildingFloors.value()
+        C = capacityFactor.get(self.buildingType.currentText())
+        E = self.peoplePerCar.value() * .18
+        N = (A*F*C)/(226*E)
+        self.outputLabel.setText(f'{round(N)}')
 
-            # N = (A*F*C)/(226*E)
-        
-            self.outputLabel.setText('test')
 
 if __name__ == "__main__":
-    app = QtWidgets.QApplication(sys.argv)
-    window = MainWindow()
-    window.show()
+    app = QApplication(sys.argv)
+    form = Form()
+    form.show()
     sys.exit(app.exec())
