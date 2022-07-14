@@ -4,14 +4,6 @@ import sys
 from PySide6.QtWidgets import (QLabel, QSpinBox, QComboBox, QPushButton, QApplication,
                                QVBoxLayout, QDialog)
 
-capacityFactor = {
-            'Office (Single Tenant)': .33,
-            'Office (Multi Tenant)': .22,
-            'Residential': .17,
-            'Hotel': .38,
-            'Hospital': .12
-        }
-
 class Form(QDialog):
 
     def __init__(self, parent=None):
@@ -23,15 +15,12 @@ class Form(QDialog):
         self.buildingFloorsLabel = QLabel('Floors in Building')
         self.buildingFloors = QSpinBox()
         self.buildingFloors.setMaximum(100)
-        self.buildingTypeLabel = QLabel('Building Type')
-        self.buildingType = QComboBox()
-        self.buildingType.clear()
-
-        for text, cf in capacityFactor.items():
-            self.buildingType.addItem(text)
-        
-        self.peoplePerCarLabel = QLabel('People Per Car')
-        self.peoplePerCar = QSpinBox()
+        self.capacityFactorLabel = QLabel('Capacity Factor')
+        self.capacityFactor = QSpinBox()
+        self.capacityFactor.setMaximum(100)
+        self.elevatorCapacityLabel = QLabel('Elevator Capacity')
+        self.elevatorCapactiy = QSpinBox()
+        self.elevatorCapacity.setMaximum(100)
         self.estimateButton = QPushButton('Estimate')
         self.outputLabel = QLabel('')
         self.estimateButton.clicked.connect(self.estimate)
@@ -41,8 +30,8 @@ class Form(QDialog):
         vbox.addWidget(self.areaPerFloor)
         vbox.addWidget(self.buildingFloorsLabel)
         vbox.addWidget(self.buildingFloors)
-        vbox.addWidget(self.buildingTypeLabel)
-        vbox.addWidget(self.buildingType)
+        vbox.addWidget(self.capacityFactorLabel)
+        vbox.addWidget(self.capacityFactor)
         vbox.addWidget(self.peoplePerCarLabel)
         vbox.addWidget(self.peoplePerCar)
         vbox.addWidget(self.estimateButton)
@@ -56,10 +45,10 @@ class Form(QDialog):
         self.show()
 
     def estimate(self):
-        A = self.areaPerFloor.value()
+        A = self.areaPerFloor.value()*10.764
         F = self.buildingFloors.value()
-        C = capacityFactor.get(self.buildingType.currentText())
-        E = self.peoplePerCar.value() * .18
+        C = self.capacityFactor.value()/100
+        E = (self.elevatorCapacity.value * C) / 165
         N = (A*F*C)/(226*E)
         self.outputLabel.setText(f'{round(N)}')
 
