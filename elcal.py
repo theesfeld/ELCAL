@@ -51,9 +51,10 @@ class Form(QDialog):
 
         # Average Highest Reversal Floor
         # H = 
+        # H=\sum_{j=1}^{N-1}\left(\sum_{i=1}^{j}\frac{U_i}{U_eff}\right)^P
 
         # Average Number Of Stops Made During Round Trip
-        # S = 
+        # S=N-\sum_{i=1}^{N}\left(1-\frac{U_i}{U_eff}\right)^P
 
         # Average Time For Passenger To Load And Unload The Elevator
         # tp = (tl+tu)/2

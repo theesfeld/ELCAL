@@ -1,5 +1,7 @@
 # Elevator Calculation Variable List
 
+## Table Of Variables
+
 |variable    |definition                                                    |
 |------------|--------------------------------------------------------------|
 |a           |acceleration (m/s2)                                           |
@@ -35,7 +37,7 @@
 |UPPINT      |average up peak interval (s)                                  |
 |v           |contract (rated) speed (m/s)                                  |
 
-# VARIABLES NEEDED FROM USER:
+## VARIABLES NEEDED FROM USER
 
 CAPACITY FACTOR             (CF)    [% in decimal]
 CAR CAPACITY                (CC)    [kg]
