@@ -93,25 +93,25 @@ class Form(QDialog):
     def calculate(self):
         elevators = []
 
-        for i in range(self.elevatorNumber.value()):
-            
-            elevators.append('')
-
-        #cf = self.capacityFactor.value()
-        #cc = self.elevatorCapacity.value()
-        #ui = []
-        #j = 
-        #n = []
+        cf = self.elevatorCapacityFactor.value()
+        cc = self.elevatorCapacity.value()
+        n = self.elevatorNumber.value()
+        tl = tu = self.buildingPassengerLU.value()
+        j = self.elevatorJerk.value() 
+        v = self.elevatorSpeed.value()
+        to = self.elevatorDoorO.value()
+        tc = self.elevatorDoorC.value()
         # ElevatorVariables.md has variable list
         
         # persons per elevator
         # p=\left(\frac{cf}{100}\right)\cdot{cc}
-        #p = (cf/100) * cc
+        p = (cf/100) * cc
         
         # Effective Building population
         # Ueff = 0
         # for floorpopulation in list of floors/populations
         #   ueff = ueff + i
+        ueff = self.buildingPopulation.value()
 
         # Average Highest Reversal Floor 
         # H=\sum_{j=1}^{N-1}\left(\sum_{i=1}^{j}\frac{U_i}{U_eff}\right)^P
@@ -123,7 +123,7 @@ class Form(QDialog):
 
         # Average Time For Passenger To Load And Unload The Elevator
         # tp=\frac{({tl}+{tu})}{2}
-        #tp = (tl+tu)/2
+        tp = (tl+tu)/2
 
         # Time taken for the lift to travel between two adjacent floors at rated speed
         # tv=\frac{df}{v}
