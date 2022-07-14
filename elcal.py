@@ -56,11 +56,7 @@ class Form(QDialog):
             acceleration = 0
 
     def estimate(self):
-        elevatorData = []
-        buildingData = []      
-
-        print(elevatorData)
-        print(buildingData)
+        elevators = []
 
         #cf = self.capacityFactor.value()
         #cc = self.elevatorCapacity.value()
